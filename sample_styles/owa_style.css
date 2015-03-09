@@ -1,0 +1,19 @@
+/* This is a sample css style page to make my OWA look a little more like a desktop app.
+ * It removes alot of the header and removes chat (since I use a desktop app for chat). It
+ * also re-aligns part of the header so that the refresh icon looks more natural. */
+
+div#divBrandBarContainer, div#buddytree, img#divHeaderDivideRight, img#divHeaderDivideLeft, div#divHeaderDivideTile {
+    display:none !important;
+}
+
+div#divAlertBarContainer {
+    top: 5px !important;
+}
+
+div#divMainPage {
+    top: 35px !important;
+}
+
+div#divBreadcrumbs {
+    padding: 0px 0px 0px 35px !important;
+}
