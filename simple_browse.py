@@ -99,12 +99,13 @@ if __name__ == "__main__":
         prefills['password'] = args.password
     if args.submit:
         submit = True
-    for field in args.forminput:
-        key, value = field.split(':')
-        if key in prefills:
-            parser.print_help()
-            exit(1)
-        prefills[key] = value
+    if args.forminput:
+        for field in args.forminput:
+            key, value = field.split(':')
+            if key in prefills:
+                parser.print_help()
+                exit(1)
+            prefills[key] = value
 
     win = Gtk.Window()
     win.set_default_size(1500, 900)
