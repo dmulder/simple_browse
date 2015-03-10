@@ -1,4 +1,4 @@
-# Simple Browser
+Simple Browser
 
 usage: simple_browse.py [-h] [--useragent USERAGENT] [--stylesheet STYLESHEET]
                         [--username USERNAME] [--password PASSWORD]
