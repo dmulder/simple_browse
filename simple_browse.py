@@ -68,7 +68,11 @@ def prefill_password(webview, frame):
             form.submit()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser_epilog = ("Example:\n\n"
+    "./simple_browse.py https://owa.example.com --useragent=\"Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0\" --stylesheet=~/simple_browse/sample_styles/owa_style.css --username=<webmail username> --b64pass=\"<base64 encoded password>\" --forminput=trusted:true --submit\n\n"
+    "This command will open Outlook Web Access, set the user agent to allow it to \nload using pipelight (for silverlight support), login to webmail, then apply a \ncustom css style to make webmail look like a desktop app.\n")
+
+    parser = argparse.ArgumentParser(description="Simple Browser: A simple webkit browser written in Python", epilog=parser_epilog, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("url")
     parser.add_argument("--useragent", help="An optional user agent to apply to the main page")
     parser.add_argument("--stylesheet", help="An optional stylesheet to apply to the main page")
