@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, os, urllib
+import sys, os, urllib, argparse, base64
 from gi.repository import Gtk, WebKit
 
 webView = None
@@ -42,18 +42,65 @@ def HandleNavigationRequested(webview, frame, request, navigation_action, policy
         HandleCloseWebView(webview)
         return 1
 
-if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        print '\n\t%s <url> [user-agent] [user-stylesheet-uri]\n' % sys.argv[0]
-        exit(1)
+prefills = {}
+submit = False
+def prefill_password(webview, frame):
+    global prefills, submit
+    dom = webview.get_dom_document()
 
-    url = sys.argv[1]
+    forms = dom.get_forms()
+    for i in range(0, forms.get_length()):
+        form = forms.item(i)
+        elements = form.get_elements()
+        is_form_modified = False
+        for j in range(0, elements.get_length()):
+            element = elements.item(j)
+            element_name = element.get_name()
+            for key in prefills.keys():
+                if element_name == key:
+                    if prefills[key].lower() == 'true':
+                        element.set_checked(True)
+                        is_form_modified = True
+                    else:
+                        element.set_value(prefills[key])
+                        is_form_modified = True
+        if is_form_modified and submit:
+            form.submit()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("url")
+    parser.add_argument("--useragent", help="An optional user agent to apply to the main page")
+    parser.add_argument("--stylesheet", help="An optional stylesheet to apply to the main page")
+    parser.add_argument("--username", help="A username we'll try to use to sign in")
+    parser.add_argument("--password", help="A password for signing in")
+    parser.add_argument("--b64pass", help="An alternative b64 encoded password for sign on")
+    parser.add_argument("--forminput", help="A form field name and value to prefill (seperated by a colon). Only one value for each key is allowed.", action='append')
+    parser.add_argument("--submit", help="Submit the filled form when we've finished entering values", action="store_true")
+
+    args = parser.parse_args()
+    url = args.url
+
     user_agent = None
+    if args.useragent:
+        user_agent = args.useragent
     stylesheet = None
-    if len(sys.argv) > 2:
-        user_agent = sys.argv[2]
-    if len(sys.argv) > 3:
-        stylesheet = 'file://localhost%s' % sys.argv[3]
+    if args.stylesheet:
+        stylesheet = 'file://localhost%s' % os.path.abspath(args.stylesheet)
+    if args.username:
+        prefills['username'] = args.username
+    if args.b64pass:
+        prefills['password'] = base64.b64decode(args.b64pass)
+    elif args.password:
+        prefills['password'] = args.password
+    if args.submit:
+        submit = True
+    for field in args.forminput:
+        key, value = field.split(':')
+        if key in prefills:
+            parser.print_help()
+            exit(1)
+        prefills[key] = value
 
     win = Gtk.Window()
     win.set_default_size(1500, 900)
@@ -78,6 +125,7 @@ if __name__ == "__main__":
     webView.connect('new-window-policy-decision-requested', HandleNewWindowPolicyDecisionRequested)
     webView.connect('navigation-policy-decision-requested', HandleNavigationRequested)
     #webView.connect('notify::title', HandleTitleChanged)
+    webView.connect('load-finished', prefill_password)
     win.set_title('')
 
     # Add the Refresh button
