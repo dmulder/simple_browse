@@ -108,6 +108,7 @@ if __name__ == "__main__":
             prefills[key] = value
 
     win = Gtk.Window()
+    scrolled = Gtk.ScrolledWindow()
     win.set_default_size(1500, 900)
     overlay = Gtk.Overlay()
     webView = WebKit.WebView()
@@ -146,7 +147,8 @@ if __name__ == "__main__":
     imgevent.connect('button-press-event', refresh)
     fixed.put(imgevent, 10, 10)
 
-    win.add(overlay)
+    win.add(scrolled)
+    scrolled.add(overlay)
     win.show_all()
     win.connect('destroy', Gtk.main_quit)
     Gtk.main()
