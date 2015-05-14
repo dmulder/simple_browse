@@ -109,7 +109,6 @@ if __name__ == "__main__":
 
     win = Gtk.Window()
     win.set_default_size(1500, 900)
-    overlay = Gtk.Overlay()
     webView = WebKit.WebView()
     webView.load_uri(url)
     overlay = Gtk.Overlay()
