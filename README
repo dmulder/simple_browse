@@ -30,6 +30,6 @@ Example:
 
 This command will open Outlook Web Access, set the user agent to allow it to 
 load using pipelight (for silverlight support), login to webmail, then apply a 
-custom css style to make webmail look like a desktop app. When new emails arrive,
-notification will be sent to gnome-shell.
+custom css style to make webmail look like a desktop app. When new emails
+arrive, notification will be sent to gnome-shell.
 
