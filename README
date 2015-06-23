@@ -1,9 +1,4 @@
-Simple Browser
-
-usage: simple_browse.py [-h] [--useragent USERAGENT] [--stylesheet STYLESHEET]
-                        [--username USERNAME] [--password PASSWORD]
-                        [--b64pass B64PASS] [--forminput FORMINPUT] [--submit]
-                        url
+Simple Browser: A simple webkit browser written in Python
 
 positional arguments:
   url
@@ -22,9 +17,19 @@ optional arguments:
                         colon). Only one value for each key is allowed.
   --submit              Submit the filled form when we've finished entering
                         values
+  --ignore-submit IGNORE_SUBMIT
+                        Ignore the submit if the form contains this key
+  --title TITLE         Title for the window
+  --notify NOTIFY       A regex search string, base64 encoded, which will
+                        display a notification when found, example: <span
+                        class="nwItmTxtSbj">([\w ]+)</span>
 
 Example:
 
-./simple_browse.py https://owa.example.com --useragent="Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0" --stylesheet=~/simple_browse/sample_styles/owa_style.css --username=<webmail username> --b64pass="<base64 encoded password>" --forminput=trusted:true --submit
+./simple_browse.py https://owa.example.com --useragent="Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0" --stylesheet=~/simple_browse/sample_styles/owa_style.css --username=<webmail username> --b64pass="<base64 encoded password>" --forminput=trusted:true --submit --notify=PHNwYW4gY2xhc3M9Im53SXRtVHh0U2JqIj4oW1x3IF0rKTwvc3Bhbj4=
 
-This command will open Outlook Web Access, set the user agent to allow it to load using pipelight (for silverlight support), login to webmail, then apply a custom css style to make webmail look like a desktop app.
+This command will open Outlook Web Access, set the user agent to allow it to 
+load using pipelight (for silverlight support), login to webmail, then apply a 
+custom css style to make webmail look like a desktop app. When new emails arrive,
+notification will be sent to gnome-shell.
+
