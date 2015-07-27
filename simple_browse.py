@@ -201,8 +201,9 @@ if __name__ == "__main__":
     if args.title:
         window_title = args.title
         win.set_title(args.title)
-    t = threading.Thread(target=SearchNotify, args=(webView,))
-    t.start()
+    if search_notifys:
+        t = threading.Thread(target=SearchNotify, args=(webView,))
+        t.start()
     Gtk.main()
     stop_threads = True
 
